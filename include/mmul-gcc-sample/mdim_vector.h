@@ -70,4 +70,4 @@ private:
 
 } // namespace mmul
 
-#endif // MMUL_GCC_SAMPLE_SINGLE_DIMENTiONAL_MAtRIX_MUL_
+#endif // MMUL_GCC_SAMPLE_MDIM_VECTOR_H_

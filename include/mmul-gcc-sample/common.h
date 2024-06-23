@@ -104,6 +104,74 @@ namespace util {
       std::fill(arr[i].begin(), arr[i].end(), value);
     }
   }
+
+  /**
+   * 転置行列を返す．
+   *
+   * @tparam T 行列の要素の型
+   * @tparam N 列数
+   * @param[in] arr もとの行列
+   * @param[out] trans 転置行列
+   */
+  template <typename T, std::size_t N>
+  void Transpose(const T (&arr)[N * N], T (&trans)[N * N]) {
+    for (unsigned int i = 0; i < N; i++) {
+      for (unsigned int j = 0; j < N; j++) {
+        trans[j + const_val::kSize*i] = arr[i + const_val::kSize*j];
+      }
+    }
+  }
+
+  /**
+   * 転置行列を返す．
+   *
+   * @tparam T 行列の要素の型
+   * @tparam N 列数
+   * @param[in] arr もとの行列
+   * @param[out] trans 転置行列
+   */
+  template <typename T, std::size_t N>
+  void Transpose(const std::array<T, N * N>& arr, std::array<T, N * N>& trans) {
+    for (unsigned int i = 0; i < N; i++) {
+      for (unsigned int j = 0; j < N; j++) {
+        trans[j + N*i] = arr[i + N*j];
+      }
+    }
+  }
+
+  /**
+   * 転置行列を返す．
+   *
+   * @tparam T 行列の要素の型
+   * @param[in] arr もとの行列
+   * @param[out] trans 転置行列
+   * @param[in] n 列数
+   */
+  template <typename T>
+  void Transpose(const T *const arr, T *const trans, std::size_t n) {
+    for (unsigned int i = 0; i < n; i++) {
+      for (unsigned int j = 0; j < n; j++) {
+        trans[j + n*i] = arr[i + n*j];
+      }
+    }
+  }
+
+  /**
+   * 転置行列を返す．
+   *
+   * @tparam T 行列の要素の型
+   * @param[in] arr もとの行列
+   * @param[out] trans 転置行列
+   * @param[in] n 列数
+   */
+  template <typename T>
+  void Transpose(const std::vector<T>& arr, std::vector<T>& trans, std::size_t n) {
+    for (unsigned int i = 0; i < n; i++) {
+      for (unsigned int j = 0; j < n; j++) {
+        trans[j + n*i] = arr[i + n*j];
+      }
+    }
+  }
 } // namespace util
 
 } // namespace mmul

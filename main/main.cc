@@ -5,6 +5,11 @@
 #include "mmul-gcc-sample/sdim_raw_array.h"
 #include "mmul-gcc-sample/sdim_std_array.h"
 #include "mmul-gcc-sample/sdim_new_array.h"
+#include "mmul-gcc-sample/sdim_vector.h"
+#include "mmul-gcc-sample/sdim_raw_array_trans.h"
+#include "mmul-gcc-sample/sdim_std_array_trans.h"
+#include "mmul-gcc-sample/sdim_new_array_trans.h"
+#include "mmul-gcc-sample/sdim_vector_trans.h"
 #include <iostream>
 #include <chrono>
 
@@ -16,7 +21,11 @@ int main() {
   mmul::SDimRawArray sdim_raw_array;
   mmul::SDimStdArray sdim_std_array;
   mmul::SDimNewArray sdim_new_array;
-  mmul::SDimNewArray sdim_vector;
+  mmul::SDimVector sdim_vector;
+  mmul::SDimRawArrayTrans sdim_raw_array_trans;
+  mmul::SDimStdArrayTrans sdim_std_array_trans;
+  mmul::SDimNewArrayTrans sdim_new_array_trans;
+  mmul::SDimVectorTrans sdim_vector_trans;
 
   std::vector<std::reference_wrapper<mmul::Executable>> matrix_muls = {
     mdim_raw_array,
@@ -27,6 +36,10 @@ int main() {
     sdim_std_array,
     sdim_new_array,
     sdim_vector,
+    sdim_raw_array_trans,
+    sdim_std_array_trans,
+    sdim_new_array_trans,
+    sdim_vector_trans,
   };
 
   int num_loops = 100;

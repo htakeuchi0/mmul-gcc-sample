@@ -1,5 +1,5 @@
-#ifndef MMUL_GCC_SAMPLE_MDIM_NEW_ARRAY_H_
-#define MMUL_GCC_SAMPLE_MDIM_NEW_ARRAY_H_
+#ifndef MMUL_GCC_SAMPLE_SDIM_NEW_ARRAY_TRANS_H_
+#define MMUL_GCC_SAMPLE_SDIM_NEW_ARRAY_TRANS_H_
 
 #include "mmul-gcc-sample/matrix_mul.h"
 #include "mmul-gcc-sample/executable.h"
@@ -12,17 +12,17 @@
 namespace mmul {
 
 /**
- * @brief new で確保した2次元配列で表現された行列の積を計算するためのクラス．
+ * @brief new で確保した1次元配列で表現された行列の積（転置版）を計算するためのクラス．
  */
-class MDimNewArray :
+class SDimNewArrayTrans :
   public MatrixMul,
   public Executable {
 public:
   /** デフォルトコンストラクタ． */
-  MDimNewArray();
+  SDimNewArrayTrans();
 
   /** デストラクタ． */
-  ~MDimNewArray();
+  ~SDimNewArrayTrans();
 
   /**
    * 初期化する．
@@ -65,27 +65,26 @@ private:
    * @param[in] n 行数
    * @return 行列の(1, 1)成分へのポインタ
    */
-  static double** NewMatrix(std::size_t m, std::size_t n);
+  static double* NewMatrix(std::size_t m, std::size_t n);
 
   /**
    * ヒープ領域に生成した行列を削除する．
    *
-   * @param[in] m 列数
    * @param[in,out] arr 行列
    */
-  static void DeleteMatrix(std::size_t m, double**& arr);
+  static void DeleteMatrix(double*& arr);
 
 private:
   /** 行列 */
-  double** a_;
+  double* a_;
 
   /** 行列 */
-  double** b_;
+  double* b_;
 
   /** 行列積を格納するための変数 */
-  double** c_;
+  double* c_;
 };
 
 } // namespace mmul
 
-#endif // MMUL_GCC_SAMPLE_MDIM_NEW_ARRAY_H_
+#endif // MMUL_GCC_SAMPLE_SDIM_NEW_ARRAY_TRANS_H_

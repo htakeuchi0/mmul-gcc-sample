@@ -1,10 +1,9 @@
-#ifndef MMUL_GCC_SAMPLE_SDIM_VECTOR_H_
-#define MMUL_GCC_SAMPLE_SDIM_VECTOR_H_
+#ifndef MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_TRANS_H_
+#define MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_TRANS_H_
 
+#include "mmul-gcc-sample/common.h"
 #include "mmul-gcc-sample/matrix_mul.h"
 #include "mmul-gcc-sample/executable.h"
-#include "mmul-gcc-sample/common.h"
-#include <vector>
 
 /**
  * @brief 本プログラムが提供する名前空間．
@@ -12,17 +11,14 @@
 namespace mmul {
 
 /**
- * @brief std::vector の1次元配列で表現された行列の積を計算するためのクラス．
+ * @brief 生の1次元配列で表現された行列の積（転置つき）を計算するためのクラス．
  */
-class SDimVector :
+class SDimRawArrayTrans :
   public MatrixMul,
   public Executable {
 public:
   /** デフォルトコンストラクタ */
-  SDimVector();
-
-  /** デストラクタ */
-  ~SDimVector();
+  SDimRawArrayTrans();
 
   /**
    * 初期化する．
@@ -58,16 +54,22 @@ public:
   double GetResult(std::size_t i, std::size_t j) const override;
 
 private:
-  /** 行列 */
-  std::vector<double> a_;
+  /**
+   * 行列積をとるための行列．
+   */
+  double a_[const_val::kSize * const_val::kSize];
 
-  /** 行列 */
-  std::vector<double> b_;
+  /**
+   * 行列積をとるための行列．
+   */
+  double b_[const_val::kSize * const_val::kSize];
 
-  /** 行列積を格納するための変数 */
-  std::vector<double> c_;
+  /**
+   * 行列積の結果を格納する行列．
+   */
+  double c_[const_val::kSize * const_val::kSize];
 };
 
 } // namespace mmul
 
-#endif // MMUL_GCC_SAMPLE_SDIM_VECTOR_H_
+#endif // MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_TRANS_H_
