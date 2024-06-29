@@ -7,7 +7,11 @@
 namespace mmul {
 
 /** デフォルトコンストラクタ． */
-MDimNewArray::MDimNewArray() {}
+MDimNewArray::MDimNewArray() {
+  a_ = nullptr;
+  b_ = nullptr;
+  c_ = nullptr;
+}
 
 /** デストラクタ． */
 MDimNewArray::~MDimNewArray() {
@@ -94,6 +98,10 @@ double** MDimNewArray::NewMatrix(std::size_t m, std::size_t n) {
  * @param[in,out] arr 行列
  */
 void MDimNewArray::DeleteMatrix(std::size_t m, double**& arr) {
+  if (arr == nullptr) {
+    return;
+  }
+
   for (unsigned int i = 0; i < m; i++) {
     delete [] arr[i];
     arr[i] = nullptr;

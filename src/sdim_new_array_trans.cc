@@ -7,7 +7,11 @@
 namespace mmul {
 
 /** デフォルトコンストラクタ． */
-SDimNewArrayTrans::SDimNewArrayTrans() {}
+SDimNewArrayTrans::SDimNewArrayTrans() {
+  a_ = nullptr;
+  b_ = nullptr;
+  c_ = nullptr;
+}
 
 /** デストラクタ． */
 SDimNewArrayTrans::~SDimNewArrayTrans() {
