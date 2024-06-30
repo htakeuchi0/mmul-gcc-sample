@@ -17,6 +17,12 @@
 #include <string>
 #include <memory>
 
+/**
+ * 行列積計算ロジックを返す．
+ *
+ * @param[in] label ロジックのラベル
+ * @return 行列積計算ロジック
+ */
 std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
   if (label == "mdim_raw_array") {
     return std::make_unique<mmul::MDimRawArray>();
@@ -66,9 +72,17 @@ std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
     return std::make_unique<mmul::SDimVectorTrans>();
   }
 
-  return nullptr;
+  return std::unique_ptr<mmul::Executable>();
 }
 
+/**
+ * 実行時間を計測して返す．
+ *
+ * @param[in] executable 実行ロジック
+ * @param[in] num_samples 実行時間のサンプル数
+ * @param[in] num_loops 実行時間を計測するために何回連続実行するか
+ * @return 実行時間 [sec] のリスト
+ */
 std::vector<double> EvaluatePerformance(
     std::unique_ptr<mmul::Executable>& executable,
     int num_samples,
@@ -96,6 +110,13 @@ std::vector<double> EvaluatePerformance(
   return elapsed_times;
 }
 
+/**
+ * 結果をJSON形式で出力する．
+ *
+ * @param[in] result 実行結果
+ * @param[in] out 出力先
+ * @return 出力ストリームへの参照
+ */
 std::ostream& PrintResult(
     const std::map<std::string, std::vector<double>>& result,
     std::ostream& out = std::cout) {
@@ -126,6 +147,11 @@ std::ostream& PrintResult(
   return out;
 }
 
+/**
+ * 実行用メイン関数．
+ *
+ * @return 終了コード
+ */
 int main() {
   std::vector<std::string> labels = {
     "mdim_raw_array",
