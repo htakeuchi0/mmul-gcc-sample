@@ -10,6 +10,7 @@ def main():
     # ラベルを設定する
     plt.xlabel('Optimization Level')
     plt.ylabel('Elapsed Time [sec]')
+    plt.ylim([0, 0.1])
 
     # x軸表示が回転されているため戻す
     plt.xticks(rotation=0)

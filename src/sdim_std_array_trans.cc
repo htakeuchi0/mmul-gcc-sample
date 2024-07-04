@@ -22,7 +22,7 @@ void SDimStdArrayTrans::Init() {
  * 行列積を計算する．
  */
 void SDimStdArrayTrans::Compute() {
-  std::array<double, const_val::kSize * const_val::kSize> trans_a;
+  alignas(32) std::array<double, const_val::kSize * const_val::kSize> trans_a;
   util::Transpose<double, const_val::kSize>(a_, trans_a);
   for (unsigned int i = 0; i < const_val::kSize; i++) {
     for (unsigned int j = 0; j < const_val::kSize; j++) {

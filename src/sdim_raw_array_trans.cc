@@ -22,7 +22,7 @@ void SDimRawArrayTrans::Init() {
  * 行列積を計算する．
  */
 void SDimRawArrayTrans::Compute() {
-  double trans_a[const_val::kSize * const_val::kSize];
+  alignas(32) double trans_a[const_val::kSize * const_val::kSize];
   util::Transpose<double, const_val::kSize>(a_, trans_a);
   for (unsigned int i = 0; i < const_val::kSize; i++) {
     for (unsigned int j = 0; j < const_val::kSize; j++) {

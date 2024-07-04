@@ -7,10 +7,10 @@ import pandas as pd
 def main():
     # ファイルの読み込み
     filenames = [
-        'mmul-O0-openmp.json',
-        'mmul-O1-openmp.json',
-        'mmul-O2-openmp.json',
-        'mmul-O3-openmp.json' ]
+        'mmul-O0-avx.json',
+        'mmul-O1-avx.json',
+        'mmul-O2-avx.json',
+        'mmul-O3-avx.json' ]
     loaded_data = []
     for filename in filenames:
         with open(os.path.join('..', 'log', filename)) as f:
@@ -31,7 +31,7 @@ def main():
     df = pd.DataFrame(eval_data_mean)
     df = df.T
 
-    df.T.to_csv('eval_openmp.csv')
+    df.T.to_csv('eval_avx.csv')
 
     # 実行時間の標本標準偏差
     # 最適化レベルをレコードインデックスにするために転置する
@@ -44,10 +44,12 @@ def main():
 
     # 表示順を固定するためにラベル順を指定する
     y_labels = [
-        'mdim_raw_array',
-        'mdim_raw_array_openmp',
-        'sdim_vector_trans',
-        'sdim_vector_trans_openmp' ]
+        'sdim_raw_array',
+        'sdim_std_array',
+        'sdim_raw_array_avx',
+        'sdim_std_array_avx',
+        'sdim_raw_array_avx_unroll',
+        'sdim_std_array_avx_unroll' ]
 
     # 標本標準偏差でエラーバーをつける
     df.plot.bar(
@@ -62,7 +64,7 @@ def main():
     plt.xticks(rotation=0)
 
     # ファイルに保存
-    plt.savefig('plot-openmp.png')
+    plt.savefig('plot-avx.png')
 
 if __name__ == '__main__':
     main()

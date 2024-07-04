@@ -12,6 +12,10 @@
 #include "mmul-gcc-sample/sdim_vector_trans.h"
 #include "mmul-gcc-sample/mdim_raw_array_openmp.h"
 #include "mmul-gcc-sample/sdim_vector_trans_openmp.h"
+#include "mmul-gcc-sample/sdim_std_array_avx.h"
+#include "mmul-gcc-sample/sdim_raw_array_avx.h"
+#include "mmul-gcc-sample/sdim_std_array_avx_unroll.h"
+#include "mmul-gcc-sample/sdim_raw_array_avx_unroll.h"
 #include <chrono>
 #include <map>
 #include <iomanip>
@@ -80,6 +84,22 @@ std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
 
   if (label == "sdim_vector_trans_openmp") {
     return std::make_unique<mmul::SDimVectorTransOpenMP>();
+  }
+
+  if (label == "sdim_std_array_avx") {
+    return std::make_unique<mmul::SDimStdArrayAVX>();
+  }
+
+  if (label == "sdim_raw_array_avx") {
+    return std::make_unique<mmul::SDimRawArrayAVX>();
+  }
+
+  if (label == "sdim_std_array_avx_unroll") {
+    return std::make_unique<mmul::SDimStdArrayAVXUnroll>();
+  }
+
+  if (label == "sdim_raw_array_avx_unroll") {
+    return std::make_unique<mmul::SDimRawArrayAVXUnroll>();
   }
 
   return std::unique_ptr<mmul::Executable>();
@@ -208,6 +228,39 @@ int OpenMPExperiment() {
 
   std::map<std::string, std::vector<double>> result;
   for (const auto& label : labels) {
+    std::cerr << label << "\n";
+    auto matrix_mul = MatrixMul(label);
+    if (!matrix_mul) {
+      return 1;
+    }
+
+    auto elapsed_times = EvaluatePerformance(matrix_mul, num_samples, num_loops);
+    if (elapsed_times.size() == 0) {
+      return 1;
+    }
+
+    result.emplace(label, elapsed_times);
+  }
+
+  PrintResult(result);
+  return 0;
+}
+
+int AVXExperiment() {
+  std::vector<std::string> labels = {
+    "sdim_std_array",
+    "sdim_raw_array",
+    "sdim_std_array_avx",
+    "sdim_raw_array_avx",
+    "sdim_std_array_avx_unroll",
+    "sdim_raw_array_avx_unroll",
+  };
+
+  int num_samples = 100;
+  int num_loops = 10;
+
+  std::map<std::string, std::vector<double>> result;
+  for (const auto& label : labels) {
     auto matrix_mul = MatrixMul(label);
     if (!matrix_mul) {
       return 1;
@@ -231,6 +284,6 @@ int OpenMPExperiment() {
  * @return 終了コード
  */
 int main() {
-  int ret_code = OpenMPExperiment();
+  int ret_code = AVXExperiment();
   return ret_code;
 }
