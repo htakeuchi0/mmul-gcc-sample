@@ -10,6 +10,8 @@
 #include "mmul-gcc-sample/sdim_std_array_trans.h"
 #include "mmul-gcc-sample/sdim_new_array_trans.h"
 #include "mmul-gcc-sample/sdim_vector_trans.h"
+#include "mmul-gcc-sample/mdim_raw_array_openmp.h"
+#include "mmul-gcc-sample/sdim_vector_trans_openmp.h"
 #include <chrono>
 #include <map>
 #include <iomanip>
@@ -70,6 +72,14 @@ std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
 
   if (label == "sdim_vector_trans") {
     return std::make_unique<mmul::SDimVectorTrans>();
+  }
+
+  if (label == "mdim_raw_array_openmp") {
+    return std::make_unique<mmul::MDimRawArrayOpenMP>();
+  }
+
+  if (label == "sdim_vector_trans_openmp") {
+    return std::make_unique<mmul::SDimVectorTransOpenMP>();
   }
 
   return std::unique_ptr<mmul::Executable>();
@@ -147,12 +157,7 @@ std::ostream& PrintResult(
   return out;
 }
 
-/**
- * 実行用メイン関数．
- *
- * @return 終了コード
- */
-int main() {
+int BasicExperiment() {
   std::vector<std::string> labels = {
     "mdim_raw_array",
     "mdim_std_array",
@@ -188,4 +193,44 @@ int main() {
 
   PrintResult(result);
   return 0;
+}
+
+int OpenMPExperiment() {
+  std::vector<std::string> labels = {
+    "mdim_raw_array",
+    "mdim_raw_array_openmp",
+    "sdim_vector_trans",
+    "sdim_vector_trans_openmp"
+  };
+
+  int num_samples = 100;
+  int num_loops = 10;
+
+  std::map<std::string, std::vector<double>> result;
+  for (const auto& label : labels) {
+    auto matrix_mul = MatrixMul(label);
+    if (!matrix_mul) {
+      return 1;
+    }
+
+    auto elapsed_times = EvaluatePerformance(matrix_mul, num_samples, num_loops);
+    if (elapsed_times.size() == 0) {
+      return 1;
+    }
+
+    result.emplace(label, elapsed_times);
+  }
+
+  PrintResult(result);
+  return 0;
+}
+
+/**
+ * 実行用メイン関数．
+ *
+ * @return 終了コード
+ */
+int main() {
+  int ret_code = OpenMPExperiment();
+  return ret_code;
 }

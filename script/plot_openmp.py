@@ -7,10 +7,10 @@ import pandas as pd
 def main():
     # ファイルの読み込み
     filenames = [
-        'mmul-O0.json',
-        'mmul-O1.json',
-        'mmul-O2.json',
-        'mmul-O3.json' ]
+        'mmul-O0-openmp.json',
+        'mmul-O1-openmp.json',
+        'mmul-O2-openmp.json',
+        'mmul-O3-openmp.json' ]
     loaded_data = []
     for filename in filenames:
         with open(os.path.join('..', 'log', filename)) as f:
@@ -31,7 +31,7 @@ def main():
     df = pd.DataFrame(eval_data_mean)
     df = df.T
 
-    df.to_csv('eval.csv')
+    df.T.to_csv('eval_openmp_2.csv')
 
     # 実行時間の標本標準偏差
     # 最適化レベルをレコードインデックスにするために転置する
@@ -45,17 +45,9 @@ def main():
     # 表示順を固定するためにラベル順を指定する
     y_labels = [
         'mdim_raw_array',
-        'mdim_std_array',
-        'mdim_new_array',
-        'mdim_vector',
-        'sdim_raw_array',
-        'sdim_std_array',
-        'sdim_new_array',
-        'sdim_vector',
-        'sdim_raw_array_trans',
-        'sdim_std_array_trans',
-        'sdim_new_array_trans',
-        'sdim_vector_trans' ]
+        'mdim_raw_array_openmp',
+        'sdim_vector_trans',
+        'sdim_vector_trans_openmp' ]
 
     # 標本標準偏差でエラーバーをつける
     df.plot.bar(
@@ -69,7 +61,7 @@ def main():
     plt.xticks(rotation=0)
 
     # ファイルに保存
-    plt.savefig('plot.png')
+    plt.savefig('plot-openmp.png')
 
 if __name__ == '__main__':
     main()

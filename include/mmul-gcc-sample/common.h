@@ -172,6 +172,25 @@ namespace util {
       }
     }
   }
+
+  /**
+   * 転置行列を返す．
+   *
+   * @tparam T 行列の要素の型
+   * @param[in] arr もとの行列
+   * @param[out] trans 転置行列
+   * @param[in] n 列数
+   */
+  template <typename T>
+  void TransposeOpenMP(const std::vector<T>& arr, std::vector<T>& trans, std::size_t n) {
+    unsigned int j = 0;
+    #pragma omp parallel for private(j)
+    for (unsigned int i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        trans[j + n*i] = arr[i + n*j];
+      }
+    }
+  }
 } // namespace util
 
 } // namespace mmul
