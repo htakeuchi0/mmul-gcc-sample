@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
+import os
 import numpy as np
 import pandas as pd
 
 def main():
     # 各方式の平均値をまとめたファイルを読み込む
-    df = pd.read_csv('eval-2.csv', index_col=0)
+    df = pd.read_csv(os.path.join('output', 'eval-2.csv'), index_col=0)
     df.T.plot.bar()
 
     # ラベルを設定する
