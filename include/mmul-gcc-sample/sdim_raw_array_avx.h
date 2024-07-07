@@ -1,6 +1,8 @@
 #ifndef MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_AVX_H_
 #define MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_AVX_H_
 
+#ifdef __AVX2__
+
 #include "mmul-gcc-sample/common.h"
 #include "mmul-gcc-sample/matrix_mul.h"
 #include "mmul-gcc-sample/executable.h"
@@ -71,5 +73,7 @@ private:
 };
 
 } // namespace mmul
+
+#endif // ifdef __AVX2__
 
 #endif // MMUL_GCC_SAMPLE_SDIM_RAW_ARRAY_AVX_H_

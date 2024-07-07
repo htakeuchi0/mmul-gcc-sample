@@ -86,6 +86,7 @@ std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
     return std::make_unique<mmul::SDimVectorTransOpenMP>();
   }
 
+#ifdef __AVX2__
   if (label == "sdim_std_array_avx") {
     return std::make_unique<mmul::SDimStdArrayAVX>();
   }
@@ -101,6 +102,7 @@ std::unique_ptr<mmul::Executable> MatrixMul(const std::string& label) {
   if (label == "sdim_raw_array_avx_unroll") {
     return std::make_unique<mmul::SDimRawArrayAVXUnroll>();
   }
+#endif // ifdef __AVX2__
 
   return std::unique_ptr<mmul::Executable>();
 }
@@ -177,6 +179,11 @@ std::ostream& PrintResult(
   return out;
 }
 
+/**
+ * 通常パターンで計測する．
+ *
+ * @return 終了コード
+ */
 int BasicExperiment() {
   std::vector<std::string> labels = {
     "mdim_raw_array",
@@ -215,6 +222,11 @@ int BasicExperiment() {
   return 0;
 }
 
+/**
+ * OpenMPを利用するパターンで計測する．
+ *
+ * @return 終了コード
+ */
 int OpenMPExperiment() {
   std::vector<std::string> labels = {
     "mdim_raw_array",
@@ -228,7 +240,6 @@ int OpenMPExperiment() {
 
   std::map<std::string, std::vector<double>> result;
   for (const auto& label : labels) {
-    std::cerr << label << "\n";
     auto matrix_mul = MatrixMul(label);
     if (!matrix_mul) {
       return 1;
@@ -246,6 +257,11 @@ int OpenMPExperiment() {
   return 0;
 }
 
+/**
+ * AVX2を利用するパターンで計測する．
+ *
+ * @return 終了コード
+ */
 int AVXExperiment() {
   std::vector<std::string> labels = {
     "sdim_std_array",
@@ -283,7 +299,26 @@ int AVXExperiment() {
  *
  * @return 終了コード
  */
-int main() {
-  int ret_code = AVXExperiment();
-  return ret_code;
+int main(int argc, char **argv) {
+  std::string mode("basic");
+  if (argc > 1) {
+    mode = std::string(argv[1]);
+  }
+
+  if (mode == "basic") {
+    int ret_code = BasicExperiment();
+    return ret_code;
+  }
+
+  if (mode == "openmp") {
+    int ret_code = OpenMPExperiment();
+    return ret_code;
+  }
+
+  if (mode == "avx") {
+    int ret_code = AVXExperiment();
+    return ret_code;
+  }
+
+  return -1;
 }

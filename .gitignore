@@ -33,4 +33,4 @@
 
 # Others
 script/.venv
-script/*.png
+script/output

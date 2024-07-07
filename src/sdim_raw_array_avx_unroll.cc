@@ -1,3 +1,5 @@
+#ifdef __AVX2__
+
 #include "mmul-gcc-sample/sdim_raw_array_avx_unroll.h"
 #include "mmul-gcc-sample/common.h"
 #include <immintrin.h>
@@ -91,3 +93,5 @@ double SDimRawArrayAVXUnroll::GetResult(std::size_t i, std::size_t j) const {
 }
 
 } // namespace mmul
+
+#endif // ifdef __AVX2__
